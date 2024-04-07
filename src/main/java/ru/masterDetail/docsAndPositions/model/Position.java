@@ -18,11 +18,11 @@ import lombok.RequiredArgsConstructor;
 @AllArgsConstructor
 @RequiredArgsConstructor
 public class Position {
-    private long posNumber;
+    private Long posNumber;
     @NotNull
-    private long docId;
+    private Long docId;
     @NotBlank
     private String name;
     @NotNull
-    private double positionSum;
+    private Double positionSum;
 }
