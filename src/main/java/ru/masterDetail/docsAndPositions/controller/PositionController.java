@@ -1,10 +1,11 @@
 package ru.masterDetail.docsAndPositions.controller;
 
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.masterDetail.docsAndPositions.model.Position;
 import ru.masterDetail.docsAndPositions.service.PositionService;
+
+import javax.validation.Valid;
 
 /**
  * Контроллер для работы с объектами Position
@@ -33,8 +34,8 @@ public class PositionController {
     }
 
     //удаляет документ
-    @RequestMapping(value = "/{docNumber}", method = RequestMethod.DELETE)
-    public void deletePosition(@PathVariable long posNumber) {
+    @RequestMapping(value = "/{posNumber}", method = RequestMethod.DELETE)
+    public void deletePosition(@PathVariable Long posNumber) {
         positionService.deletePosition(posNumber);
     }
 }

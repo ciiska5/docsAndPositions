@@ -1,0 +1,1267 @@
+{
+	"info": {
+		"_postman_id": "96fdc25d-71b1-4588-95ac-2bd9c7dd7fa6",
+		"name": "Test Docs And Positions V1",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26179104"
+	},
+	"item": [
+		{
+			"name": "Добавление нового документа",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Ответ должен содержать код статуса 200 и данные в формате json\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.response.to.be.withBody;\r",
+							"    pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"const source = JSON.parse(pm.request.body.raw);\r",
+							"const target = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Документ должен содержать поля: docNumber, date, note\", function () {\r",
+							"pm.expect(target).to.have.property('docNumber');\r",
+							"pm.expect(target).to.have.property('date');\r",
+							"pm.expect(target).to.have.property('note');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Данные в ответе должны соответствовать данным в запросе\", function () {\r",
+							"    pm.expect(target.docNumber).to.not.be.null;\r",
+							"    pm.expect(source.date).equal(target.date, 'Дата документа должна соответствовать отправленному в запросе');\r",
+							"    pm.expect(source.note).equal(target.note, 'Примечание документа должна соответствовать отправленному в запросе');\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"date\": \"2024-04-09T10:13:34.808\",\r\n    \"note\": \"testNote1\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/documents",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"documents"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Добавление документа без примечания",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Ответ должен содержать код статуса 200 и данные в формате json\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.response.to.be.withBody;\r",
+							"    pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"const source = JSON.parse(pm.request.body.raw);\r",
+							"const target = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Документ должен содержать поля: docNumber, date\", function () {\r",
+							"pm.expect(target).to.have.property('docNumber');\r",
+							"pm.expect(target).to.have.property('date');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Данные в ответе должны соответствовать данным в запросе\", function () {\r",
+							"    pm.expect(target.docNumber).to.not.be.null;\r",
+							"    pm.expect(source.date).equal(target.date, 'Дата документа должна соответствовать отправленному в запросе');\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"date\": \"2024-04-09T10:13:34.808\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/documents",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"documents"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Попытка добавления документа с будущей датой",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Ответ должен содержать код статуса 400 и данные в формате json\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"    pm.response.to.be.withBody;\r",
+							"    pm.response.to.be.json;\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"date\": \"2030-04-10T12:44:24.874\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/documents",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"documents"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Попытка добавления документа с null датой",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Ответ должен содержать код статуса 400 и данные в формате json\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"    pm.response.to.be.withBody;\r",
+							"    pm.response.to.be.json;\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"date\": null\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/documents",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"documents"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Попытка добавления дубликата документа",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Ответ должен содержать код статуса 400 и данные в формате json\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"    pm.response.to.be.withBody;\r",
+							"    pm.response.to.be.json;\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"docNumber\": 1,\r\n    \"date\": \"2024-04-10T11:53:16.704\",\r\n    \"note\": \"testNote2\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/documents",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"documents"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Получение лога о попытке добавления дублирующего номера",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.be.ok;\r",
+							"});\r",
+							"pm.test(\"Test logs list response\", function () {\r",
+							"    pm.response.to.be.withBody;\r",
+							"    pm.response.to.be.json;\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.length, 'List length must be 1').to.eql(1);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/duplicatelog/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"duplicatelog",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Добавление новой позиции к документу с номером 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Ответ должен содержать код статуса 200 и данные в формате json', function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.response.to.be.withBody;\r",
+							"    pm.response.to.be.json;\r",
+							"})\r",
+							"\r",
+							"const source = JSON.parse(pm.request.body.raw);\r",
+							"\r",
+							"const target = pm.response.json();\r",
+							"\r",
+							"pm.test('Позиция должна содержать поля: docId, name, positionSum', function () {\r",
+							"    pm.expect(target).to.have.property('docId');\r",
+							"    pm.expect(target).to.have.property('name');\r",
+							"    pm.expect(target).to.have.property('positionSum');\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Данные в ответе должны соответствовать данным в запросе и содержать номер позиции\", function () {\r",
+							"    pm.expect(target.posNumber).to.not.be.null;\r",
+							"    pm.expect(source.docId).to.equal(target.docId, 'Номер документа должен соответствовать отправленному в запросе');\r",
+							"    pm.expect(source.name).to.equal(target.name, 'Имя позиции документа должно соответствовать отправленному в запросе');\r",
+							"    pm.expect(parseFloat(source.positionSum)).to.equal(parseFloat(target.positionSum), 'Сумма позиции документа должна соответствовать отправленному в запросе');\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"docId\": 1,\r\n    \"name\": \"testPosition1\",\r\n    \"positionSum\": \"50.0\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/positions",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"positions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Попытка добавления дубликата позиции в документ 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Ответ должен содержать код статуса 400 и данные в формате json\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"    pm.response.to.be.withBody;\r",
+							"    pm.response.to.be.json;\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"posNumber\": \"1\",\r\n    \"docId\": 1,\r\n    \"name\": \"testPosition1\",\r\n    \"positionSum\": \"50.0\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/positions",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"positions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Попытка добавления позиции без номера документа",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Ответ должен содержать код статуса 400 и данные в формате json\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"    pm.response.to.be.withBody;\r",
+							"    pm.response.to.be.json;\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"testPosition1\",\r\n    \"positionSum\": \"50.0\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/positions",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"positions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Попытка добавления позиции без существующего документа 3",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Ответ должен содержать код статуса 404 и данные в формате json\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"    pm.response.to.be.withBody;\r",
+							"    pm.response.to.be.json;\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"docId\": 3,\r\n    \"name\": \"testPosition2\",\r\n    \"positionSum\": \"50.0\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/positions",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"positions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Добавление позиции 2 к документу с номером 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Ответ должен содержать код статуса 200 и данные в формате json', function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.response.to.be.withBody;\r",
+							"    pm.response.to.be.json;\r",
+							"})\r",
+							"\r",
+							"const source = JSON.parse(pm.request.body.raw);\r",
+							"\r",
+							"const target = pm.response.json();\r",
+							"\r",
+							"pm.test('Позиция должна содержать поля: docId, name, positionSum', function () {\r",
+							"    pm.expect(target).to.have.property('docId');\r",
+							"    pm.expect(target).to.have.property('name');\r",
+							"    pm.expect(target).to.have.property('positionSum');\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Данные в ответе должны соответствовать данным в запросе и содержать номер позиции\", function () {\r",
+							"    pm.expect(target.posNumber).to.not.be.null;\r",
+							"    pm.expect(source.docId).to.equal(target.docId, 'Номер документа должен соответствовать отправленному в запросе');\r",
+							"    pm.expect(source.name).to.equal(target.name, 'Имя позиции документа должно соответствовать отправленному в запросе');\r",
+							"    pm.expect(parseFloat(source.positionSum)).to.equal(parseFloat(target.positionSum), 'Сумма позиции документа должна соответствовать отправленному в запросе');\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"docId\": 1,\r\n    \"name\": \"testPosition2\",\r\n    \"positionSum\": \"50.0\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/positions",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"positions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Получение документа 1 с позициями 1 и 2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Ответ должен содержать код статуса 200 и данные в формате json\", function () {\r",
+							"    pm.response.to.be.ok;    \r",
+							"    pm.response.to.be.withBody;\r",
+							"    pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"const target = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Документ должен содержать поля: docNumber, date, documentSum, note, positions\", function () {\r",
+							"pm.expect(target).to.have.property('docNumber');\r",
+							"pm.expect(target).to.have.property('date');\r",
+							"pm.expect(target).to.have.property('documentSum');\r",
+							"pm.expect(target).to.have.property('note');\r",
+							"pm.expect(target).to.have.property('positions');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Сумма документа должна соответствовать сумме позиций документа\", function () {\r",
+							"    pm.expect(target.documentSum).equal(100, 'Сумма документа должна соответствовать сумме позиций документа');\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/documents/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"documents",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Получение документа 2 без позиций",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Ответ должен содержать код статуса 200 и данные в формате json\", function () {\r",
+							"    pm.response.to.be.ok;    \r",
+							"    pm.response.to.be.withBody;\r",
+							"    pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"const target = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Документ должен содержать поля: docNumber, date, documentSum, note, positions\", function () {\r",
+							"pm.expect(target).to.have.property('docNumber');\r",
+							"pm.expect(target).to.have.property('date');\r",
+							"pm.expect(target).to.have.property('documentSum');\r",
+							"pm.expect(target).to.have.property('note');\r",
+							"pm.expect(target).to.have.property('positions');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Сумма документа без позиций должна быть 0\", function () {\r",
+							"    pm.expect(target.documentSum).equal(0, '\"Сумма документа без позиций должна быть 0');\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/documents/2",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"documents",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Попытка получения несуществующего документа 3",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Ответ должен содержать код статуса 404 и данные в формате json\", function () {\r",
+							"    pm.response.to.have.status(404);    \r",
+							"    pm.response.to.be.withBody;\r",
+							"    pm.response.to.be.json;\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/documents/3",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"documents",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Обновление позиции 1 документа 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Ответ должен содержать код статуса 201 и данные в формате json\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.response.to.be.withBody;\r",
+							"    pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"const source = JSON.parse(pm.request.body.raw);\r",
+							"const target = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Позиция должна содержать поля: posNumber, docId, name, positionSum\", function () {\r",
+							"pm.expect(target).to.have.property('posNumber');\r",
+							"pm.expect(target).to.have.property('positionSum');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Данные в ответе должны соответствовать данным в запросе\", function () {\r",
+							"    pm.expect(target.posNumber).to.not.be.null;\r",
+							"    pm.expect(target.name).to.not.be.null;\r",
+							"    pm.expect(target.positionSum).to.not.be.null;\r",
+							"    pm.expect(parseFloat(source.positionSum)).equal(parseFloat(target.positionSum), 'Cумма позиции должна совпадать с отправленным');\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"posNumber\": 1,\r\n    \"docId\": 1,\r\n    \"name\": \"updatedPosition1\",\r\n    \"positionSum\": \"40.0\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/positions",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"positions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Получение документа 1 после обновления позиции 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Ответ должен содержать код статуса 200 и данные в формате json\", function () {\r",
+							"    pm.response.to.be.ok;    \r",
+							"    pm.response.to.be.withBody;\r",
+							"    pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"const target = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Документ должен содержать поля: docNumber, date, documentSum, note, positions\", function () {\r",
+							"pm.expect(target).to.have.property('docNumber');\r",
+							"pm.expect(target).to.have.property('date');\r",
+							"pm.expect(target).to.have.property('documentSum');\r",
+							"pm.expect(target).to.have.property('note');\r",
+							"pm.expect(target).to.have.property('positions');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Сумма документа должна быть 90\", function () {\r",
+							"    pm.expect(target.documentSum).equal(90, '\"Сумма документа без позиций должна быть 90');\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/documents/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"documents",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Попытка обновления несуществующей позиции 100",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Ответ должен содержать код статуса 404 и данные в формате json\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"    pm.response.to.be.withBody;\r",
+							"    pm.response.to.be.json;\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"posNumber\": 100,\r\n    \"docId\": 1,\r\n    \"name\": \"updatedPosition1\",\r\n    \"positionSum\": \"40.0\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/positions",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"positions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Удаление позиции 1 документа 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/positions/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"positions",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Получение документа 1 после удаления позиции 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Ответ должен содержать код статуса 200 и данные в формате json\", function () {\r",
+							"    pm.response.to.be.ok;    \r",
+							"    pm.response.to.be.withBody;\r",
+							"    pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"const target = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Документ должен содержать поля: docNumber, date, documentSum, note, positions\", function () {\r",
+							"pm.expect(target).to.have.property('docNumber');\r",
+							"pm.expect(target).to.have.property('date');\r",
+							"pm.expect(target).to.have.property('documentSum');\r",
+							"pm.expect(target).to.have.property('note');\r",
+							"pm.expect(target).to.have.property('positions');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Сумма документа должна быть 50\", function () {\r",
+							"    pm.expect(target.documentSum).equal(50, '\"Сумма документа без позиций должна быть 90');\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/documents/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"documents",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Удаление документа 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/documents/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"documents",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Попытка получения документа 1 после удаления",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Ответ должен содержать код статуса 404 и данные в формате json\", function () {\r",
+							"    pm.response.to.have.status(404);    \r",
+							"    pm.response.to.be.withBody;\r",
+							"    pm.response.to.be.json;\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/documents/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"documents",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Попытка удаления несуществующей позиции 2 после удаления документа 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Ответ должен содержать код статуса 404 и данные в формате json\", function () {\r",
+							"    pm.response.to.have.status(404);    \r",
+							"    pm.response.to.be.withBody;\r",
+							"    pm.response.to.be.json;\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/positions/2",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"positions",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Попытка удаления несуществующего документа 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Ответ должен содержать код статуса 404 и данные в формате json\", function () {\r",
+							"    pm.response.to.have.status(404);    \r",
+							"    pm.response.to.be.withBody;\r",
+							"    pm.response.to.be.json;\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/documents/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"documents",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Попытка обновления несуществующего документа 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Ответ должен содержать код статуса 404 и данные в формате json\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"    pm.response.to.be.withBody;\r",
+							"    pm.response.to.be.json;\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"docNumber\": 1,\r\n    \"date\": \"2024-04-11T16:07:15.170\",\r\n    \"note\": \"add note in update\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/documents",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"documents"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Обновление документа 2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Ответ должен содержать код статуса 201 и данные в формате json\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.response.to.be.withBody;\r",
+							"    pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"const source = JSON.parse(pm.request.body.raw);\r",
+							"const target = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Документ должен содержать поля: docNumber, date, note\", function () {\r",
+							"    pm.expect(target).to.have.property('docNumber');\r",
+							"    pm.expect(target).to.have.property('date');\r",
+							"    pm.expect(target).to.have.property('note');\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"docNumber\": 2,\r\n    \"date\": \"2024-04-11T16:07:15.170\",\r\n    \"note\": \"add note in update\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/documents",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"documents"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Добавление позиции 3 в документ 2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Ответ должен содержать код статуса 200 и данные в формате json', function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.response.to.be.withBody;\r",
+							"    pm.response.to.be.json;\r",
+							"})\r",
+							"\r",
+							"const source = JSON.parse(pm.request.body.raw);\r",
+							"\r",
+							"const target = pm.response.json();\r",
+							"\r",
+							"pm.test('Позиция должна содержать поля: docId, name, positionSum', function () {\r",
+							"    pm.expect(target).to.have.property('docId');\r",
+							"    pm.expect(target).to.have.property('name');\r",
+							"    pm.expect(target).to.have.property('positionSum');\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Данные в ответе должны соответствовать данным в запросе и содержать номер позиции\", function () {\r",
+							"    pm.expect(target.posNumber).to.not.be.null;\r",
+							"    pm.expect(source.docId).to.equal(target.docId, 'Номер документа должен соответствовать отправленному в запросе');\r",
+							"    pm.expect(source.name).to.equal(target.name, 'Имя позиции документа должно соответствовать отправленному в запросе');\r",
+							"    pm.expect(parseFloat(source.positionSum)).to.equal(parseFloat(target.positionSum), 'Сумма позиции документа должна соответствовать отправленному в запросе');\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"docId\": 2,\r\n    \"name\": \"testPosition3\",\r\n    \"positionSum\": \"110.5\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/positions",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"positions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Добавление позиции 4 в документ 2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Ответ должен содержать код статуса 200 и данные в формате json', function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.response.to.be.withBody;\r",
+							"    pm.response.to.be.json;\r",
+							"})\r",
+							"\r",
+							"const source = JSON.parse(pm.request.body.raw);\r",
+							"\r",
+							"const target = pm.response.json();\r",
+							"\r",
+							"pm.test('Позиция должна содержать поля: docId, name, positionSum', function () {\r",
+							"    pm.expect(target).to.have.property('docId');\r",
+							"    pm.expect(target).to.have.property('name');\r",
+							"    pm.expect(target).to.have.property('positionSum');\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Данные в ответе должны соответствовать данным в запросе и содержать номер позиции\", function () {\r",
+							"    pm.expect(target.posNumber).to.not.be.null;\r",
+							"    pm.expect(source.docId).to.equal(target.docId, 'Номер документа должен соответствовать отправленному в запросе');\r",
+							"    pm.expect(source.name).to.equal(target.name, 'Имя позиции документа должно соответствовать отправленному в запросе');\r",
+							"    pm.expect(parseFloat(source.positionSum)).to.equal(parseFloat(target.positionSum), 'Сумма позиции документа должна соответствовать отправленному в запросе');\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"docId\": 2,\r\n    \"name\": \"testPosition4\",\r\n    \"positionSum\": \"110.6\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/positions",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"positions"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

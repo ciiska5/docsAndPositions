@@ -29,7 +29,7 @@ public class PositionService {
     }
 
     //удаляет позицию
-    public void deletePosition(long posNumber) {
+    public void deletePosition(Long posNumber) {
         positionStorage.deletePosition(posNumber);
     }
 }

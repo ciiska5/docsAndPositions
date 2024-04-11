@@ -1,10 +1,11 @@
 package ru.masterDetail.docsAndPositions.controller;
 
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.masterDetail.docsAndPositions.model.Document;
 import ru.masterDetail.docsAndPositions.service.DocumentService;
+
+import javax.validation.Valid;
 
 /**
  * Контроллер для работы с объектами Document

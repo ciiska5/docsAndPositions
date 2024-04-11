@@ -1,13 +1,11 @@
 package ru.masterDetail.docsAndPositions.model;
 
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.PastOrPresent;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PastOrPresent;
 import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.List;
 
 /**
  * Модель объекта Document
@@ -24,10 +22,9 @@ import java.util.Set;
 public class Document {
     private Long docNumber;
     @NotNull
-    @PastOrPresent(message = "date не может быть в будущем")
+    @PastOrPresent(message = "Дата не может быть в будущем")
     private LocalDateTime date;
-    @NotNull
     private Double documentSum;
     private String note;
-    private Set<Position> positions;
+    private List<Position> positions;
 }
